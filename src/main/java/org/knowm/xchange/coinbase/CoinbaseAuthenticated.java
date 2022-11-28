@@ -8,7 +8,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
-@Path("/api")
+@Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public interface CoinbaseAuthenticated extends Coinbase {
 
