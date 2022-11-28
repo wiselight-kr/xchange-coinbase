@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CoinbaseAccountJsonTest {
@@ -43,5 +44,46 @@ public class CoinbaseAccountJsonTest {
         CoinbaseBalance hold = account.getHold();
         assertThat(hold.getValue()).isEqualTo(new BigDecimal("1.23"));
         assertThat(hold.getCurrency()).isEqualTo("BTC");
+    }
+
+    @Test
+    public void testDeserializeGetListAddresses() throws IOException {
+        InputStream is =
+                CoinbaseAccountJsonTest.class.getResourceAsStream(
+                        "/org/knowm/xchange/coinbase/dto/account/example-get-list-addresses.json");
+
+        ObjectMapper mapper = new ObjectMapper();
+        CoinbaseAddressesResponse addresses = mapper.readValue(is, CoinbaseAddressesResponse.class);
+
+        assertThat(addresses.getPagination()).isNotNull();
+        CoinbasePagination pagination = addresses.getPagination();
+        assertThat(pagination.getEndingBefore()).isNull();
+        assertThat(pagination.getStartingAfter()).isNull();
+        assertThat(pagination.getLimit()).isEqualTo(25);
+        assertThat(pagination.getOrder()).isEqualTo("desc");
+        assertThat(pagination.getPreviousUri()).isNull();
+        assertThat(pagination.getNextUri()).isNull();
+
+        assertThat(addresses.getData().size()).isEqualTo(2);
+
+        CoinbaseAddress address1 = addresses.getData().get(0);
+        assertThat(address1.getId()).isEqualTo("dd3183eb-af1d-5f5d-a90d-cbff946435ff");
+        assertThat(address1.getAddress()).isEqualTo("mswUGcPHp1YnkLCgF1TtoryqSc5E9Q8xFa");
+        assertThat(address1.getName()).isNull();
+        assertThat(address1.getCreatedAt()).isEqualTo("2015-01-31T20:49:02Z");
+        assertThat(address1.getUpdatedAt()).isEqualTo("2015-03-31T17:25:29-07:00");
+        assertThat(address1.getNetwork()).isEqualTo("bitcoin");
+        assertThat(address1.getResource()).isEqualTo("address");
+        assertThat(address1.getResourcePath()).isEqualTo("/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/addresses/dd3183eb-af1d-5f5d-a90d-cbff946435ff");
+
+        CoinbaseAddress address2 = addresses.getData().get(1);
+        assertThat(address2.getId()).isEqualTo("ac5c5f15-0b1d-54f5-8912-fecbf66c2a64");
+        assertThat(address2.getAddress()).isEqualTo("mgSvu1z1amUFAPkB4cUg8ujaDxKAfZBt5Q");
+        assertThat(address2.getName()).isNull();
+        assertThat(address2.getCreatedAt()).isEqualTo("2015-03-31T17:23:52-07:00");
+        assertThat(address2.getUpdatedAt()).isEqualTo("2015-01-31T20:49:02Z");
+        assertThat(address2.getNetwork()).isEqualTo("bitcoin");
+        assertThat(address2.getResource()).isEqualTo("address");
+        assertThat(address2.getResourcePath()).isEqualTo("/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/addresses/ac5c5f15-0b1d-54f5-8912-fecbf66c2a64");
     }
 }

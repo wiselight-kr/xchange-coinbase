@@ -2,6 +2,7 @@ package org.knowm.xchange.coinbase.service;
 
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseAccountsResponse;
+import org.knowm.xchange.coinbase.dto.account.CoinbaseAddressesResponse;
 
 import java.io.IOException;
 import java.util.Date;
@@ -17,5 +18,11 @@ public class CoinbaseAccountServiceRaw extends CoinbaseBaseService {
 
         return coinbase.getAccounts(
                 apiKey, signatureCreator, new Date().getTime() / 1000L, limit, cursor);
+    }
+
+    public CoinbaseAddressesResponse getAddresses(String accountId) throws IOException {
+        final String apiKey = exchange.getExchangeSpecification().getApiKey();
+
+        return coinbase.getAddresses(apiKey, signatureCreator, new Date().getTime() / 1000L, accountId);
     }
 }

@@ -1,7 +1,9 @@
 package org.knowm.xchange.coinbase;
 
+import lombok.Data;
 import org.knowm.xchange.coinbase.dto.CoinbaseException;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseAccountsResponse;
+import org.knowm.xchange.coinbase.dto.account.CoinbaseAddressesResponse;
 import si.mazi.rescu.ParamsDigest;
 
 import javax.ws.rs.*;
@@ -24,6 +26,15 @@ public interface CoinbaseAuthenticated extends Coinbase {
             @HeaderParam(CB_ACCESS_TIMESTAMP) Long timestamp,
             @QueryParam("limit") Integer limit,
             @QueryParam("cursor") String cursor)
+            throws CoinbaseException, IOException;
+
+    @GET
+    @Path("v2/accounts/{account_id}/addresses")
+    CoinbaseAddressesResponse getAddresses(
+            @HeaderParam(CB_ACCESS_KEY) String apiKey,
+            @HeaderParam(CB_ACCESS_SIGN) ParamsDigest signature,
+            @HeaderParam(CB_ACCESS_TIMESTAMP) Long timestamp,
+            @PathParam("account_id") String accountId)
             throws CoinbaseException, IOException;
 
 }
