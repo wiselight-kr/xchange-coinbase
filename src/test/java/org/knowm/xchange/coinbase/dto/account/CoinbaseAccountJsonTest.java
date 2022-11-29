@@ -86,4 +86,35 @@ public class CoinbaseAccountJsonTest {
         assertThat(address2.getResource()).isEqualTo("address");
         assertThat(address2.getResourcePath()).isEqualTo("/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/addresses/ac5c5f15-0b1d-54f5-8912-fecbf66c2a64");
     }
+
+    @Test
+    public void testDeserializePostSendMoney() throws IOException {
+        InputStream is =
+                CoinbaseAccountJsonTest.class.getResourceAsStream(
+                        "/org/knowm/xchange/coinbase/dto/account/example-post-send-money.json");
+
+        ObjectMapper mapper = new ObjectMapper();
+        CoinbaseSendMoneyResponse sendMoneyResponse = mapper.readValue(is, CoinbaseSendMoneyResponse.class);
+
+        assertThat(sendMoneyResponse.getData()).isNotNull();
+        CoinbaseTransactionData data = sendMoneyResponse.getData();
+        assertThat(data.getId()).isEqualTo("3c04e35e-8e5a-5ff1-9155-00675db4ac02");
+        assertThat(data.getType()).isEqualTo("send");
+        assertThat(data.getStatus()).isEqualTo("pending");
+        CoinbaseAmount amount = new CoinbaseAmount(new BigDecimal("-0.10000000"), "BTC");
+        assertThat(data.getAmount()).usingRecursiveComparison().isEqualTo(amount);
+        CoinbaseAmount nativeAmount = new CoinbaseAmount(new BigDecimal("-1.00"), "USD");
+        assertThat(data.getNativeAmount()).usingRecursiveComparison().isEqualTo(nativeAmount);
+        assertThat(data.getDescription()).isNull();
+        assertThat(data.getCreatedAt()).isEqualTo("2015-01-31T20:49:02Z");
+        assertThat(data.getUpdatedAt()).isEqualTo("2015-03-31T17:25:29-07:00");
+        assertThat(data.getResource()).isEqualTo("transaction");
+        assertThat(data.getResourcePath()).isEqualTo("/v2/accounts/2bbf394c-193b-5b2a-9155-3b4732659ede/transactions/3c04e35e-8e5a-5ff1-9155-00675db4ac02");
+        CoinbaseNetwork network = new CoinbaseNetwork("unconfirmed", "463397c87beddd9a61ade61359a13adc9efea26062191fe07147037bce7f33ed", "bitcoin");
+        assertThat(data.getNetwork()).usingRecursiveComparison().isEqualTo(network);
+        CoinbaseTo to = new CoinbaseTo("bitcoin_address", "1AUJ8z5RuHRTqD1eikyfUUetzGmdWLGkpT");
+        assertThat(data.getTo()).usingRecursiveComparison().isEqualTo(to);
+        CoinbaseDetails details = new CoinbaseDetails("Send bitcoin", "to User 2");
+        assertThat(data.getDetails()).usingRecursiveComparison().isEqualTo(details);
+    }
 }

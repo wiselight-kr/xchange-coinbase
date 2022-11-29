@@ -3,6 +3,8 @@ package org.knowm.xchange.coinbase;
 import org.knowm.xchange.coinbase.dto.CoinbaseException;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseAccountsResponse;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseAddressesResponse;
+import org.knowm.xchange.coinbase.dto.account.CoinbaseSendMoneyRequest;
+import org.knowm.xchange.coinbase.dto.account.CoinbaseSendMoneyResponse;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseCreateOrderRequest;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseCreateOrderResponse;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseGetOrderResponse;
@@ -57,5 +59,16 @@ public interface CoinbaseAuthenticated extends Coinbase {
             @HeaderParam(CB_ACCESS_TIMESTAMP) Long timestamp,
             @PathParam("order_id") String orderId)
             throws CoinbaseException, IOException;
+
+    @POST
+    @Path("v2/accounts/{account_id}/transactions")
+    @Consumes(MediaType.APPLICATION_JSON)
+    CoinbaseSendMoneyResponse sendMoney(
+            @HeaderParam(CB_ACCESS_KEY) String apiKey,
+            @HeaderParam(CB_ACCESS_SIGN) ParamsDigest signature,
+            @HeaderParam(CB_ACCESS_TIMESTAMP) Long timestamp,
+            @PathParam("account_id") String accountId,
+            CoinbaseSendMoneyRequest request)
+        throws CoinbaseException, IOException;
 
 }
