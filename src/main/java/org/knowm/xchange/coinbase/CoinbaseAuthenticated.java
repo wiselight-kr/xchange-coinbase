@@ -5,6 +5,7 @@ import org.knowm.xchange.coinbase.dto.account.CoinbaseAccountsResponse;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseAddressesResponse;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseSendMoneyRequest;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseSendMoneyResponse;
+import org.knowm.xchange.coinbase.dto.marketdata.CoinbaseListProductResponse;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseCreateOrderRequest;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseCreateOrderResponse;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseGetOrderResponse;
@@ -69,6 +70,17 @@ public interface CoinbaseAuthenticated extends Coinbase {
             @HeaderParam(CB_ACCESS_TIMESTAMP) Long timestamp,
             @PathParam("account_id") String accountId,
             CoinbaseSendMoneyRequest request)
-        throws CoinbaseException, IOException;
+            throws CoinbaseException, IOException;
+
+    @GET
+    @Path("v3/brokerage/products")
+    CoinbaseListProductResponse getListProducts(
+            @HeaderParam(CB_ACCESS_KEY) String apiKey,
+            @HeaderParam(CB_ACCESS_SIGN) ParamsDigest signature,
+            @HeaderParam(CB_ACCESS_TIMESTAMP) Long timestamp,
+            @QueryParam("limit") Integer limit,
+            @QueryParam("offset") Integer offset,
+            @QueryParam("product_type") String productType)
+            throws CoinbaseException, IOException;
 
 }

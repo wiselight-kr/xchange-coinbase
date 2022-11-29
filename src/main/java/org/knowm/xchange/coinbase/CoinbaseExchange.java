@@ -4,6 +4,7 @@ import org.knowm.xchange.BaseExchange;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.coinbase.service.CoinbaseAccountService;
+import org.knowm.xchange.coinbase.service.CoinbaseMarketDataService;
 import org.knowm.xchange.coinbase.service.CoinbaseTradeService;
 
 public class CoinbaseExchange extends BaseExchange implements Exchange {
@@ -12,6 +13,7 @@ public class CoinbaseExchange extends BaseExchange implements Exchange {
     protected void initServices() {
         this.accountService = new CoinbaseAccountService(this);
         this.tradeService = new CoinbaseTradeService(this);
+        this.marketDataService = new CoinbaseMarketDataService(this);
     }
 
     @Override
