@@ -5,6 +5,7 @@ import org.knowm.xchange.coinbase.dto.account.CoinbaseAccountsResponse;
 import org.knowm.xchange.coinbase.dto.account.CoinbaseAddressesResponse;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseCreateOrderRequest;
 import org.knowm.xchange.coinbase.dto.trade.CoinbaseCreateOrderResponse;
+import org.knowm.xchange.coinbase.dto.trade.CoinbaseGetOrderResponse;
 import si.mazi.rescu.ParamsDigest;
 
 import javax.ws.rs.*;
@@ -46,6 +47,15 @@ public interface CoinbaseAuthenticated extends Coinbase {
             @HeaderParam(CB_ACCESS_SIGN) ParamsDigest signature,
             @HeaderParam(CB_ACCESS_TIMESTAMP) Long timestamp,
             CoinbaseCreateOrderRequest request)
+            throws CoinbaseException, IOException;
+
+    @GET
+    @Path("v3/brokerage/orders/historical/{order_id}")
+    CoinbaseGetOrderResponse getOrder(
+            @HeaderParam(CB_ACCESS_KEY) String apiKey,
+            @HeaderParam(CB_ACCESS_SIGN) ParamsDigest signature,
+            @HeaderParam(CB_ACCESS_TIMESTAMP) Long timestamp,
+            @PathParam("order_id") String orderId)
             throws CoinbaseException, IOException;
 
 }

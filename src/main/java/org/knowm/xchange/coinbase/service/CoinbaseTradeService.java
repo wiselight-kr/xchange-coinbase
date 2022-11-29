@@ -8,8 +8,10 @@ import org.knowm.xchange.coinbase.dto.trade.CoinbaseCreateOrderResponse;
 import org.knowm.xchange.dto.Order;
 import org.knowm.xchange.dto.trade.LimitOrder;
 import org.knowm.xchange.service.trade.TradeService;
+import org.knowm.xchange.service.trade.params.orders.OrderQueryParams;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
