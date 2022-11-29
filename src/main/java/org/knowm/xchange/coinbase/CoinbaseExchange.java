@@ -4,14 +4,14 @@ import org.knowm.xchange.BaseExchange;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.coinbase.service.CoinbaseAccountService;
+import org.knowm.xchange.coinbase.service.CoinbaseTradeService;
 
 public class CoinbaseExchange extends BaseExchange implements Exchange {
-
-    public static final String COINBASE_PASSPHRASE = "passphrase";
 
     @Override
     protected void initServices() {
         this.accountService = new CoinbaseAccountService(this);
+        this.tradeService = new CoinbaseTradeService(this);
     }
 
     @Override
